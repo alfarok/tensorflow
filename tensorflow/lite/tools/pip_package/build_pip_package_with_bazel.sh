@@ -56,15 +56,19 @@ echo "__git_version__ = '$(git -C "${TENSORFLOW_DIR}" describe)'" >> "${BUILD_DI
 cd "${BUILD_DIR}"
 case "${TENSORFLOW_TARGET}" in
   armhf)
+    echo "xnnpack = true"
     BAZEL_FLAGS="--config=elinux_armhf
       --copt=-march=armv7-a --copt=-mfpu=neon-vfpv4
       --copt=-O3 --copt=-fno-tree-pre --copt=-fpermissive
       --define tensorflow_mkldnn_contraction_kernel=0
-      --define=raspberry_pi_with_neon=true"
+      --define=raspberry_pi_with_neon=true
+      --define tflite_with_xnnpack=true"
     ;;
   aarch64)
+    echo "xnnpack = true"
     BAZEL_FLAGS="--config=elinux_aarch64
       --define tensorflow_mkldnn_contraction_kernel=0
+      --define tflite_with_xnnpack=true
       --copt=-O3"
     ;;
   *)
